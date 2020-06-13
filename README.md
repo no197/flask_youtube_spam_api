@@ -10,7 +10,7 @@
   sklearn
 ```
 ### Models
-If you want to creat a model manually please visit...(I'll update this soon!)
+If you want to create a model manually please visit... (I'll update link soon!)
 
 
 ### How to use
