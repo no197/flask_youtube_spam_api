@@ -8,12 +8,15 @@ the results in JSON format.
 # Import libraries
 import numpy as np
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import joblib
 import pickle
 from PredictHelper import LSTM_predict, predict, pre_processing, vectorize_lstm, vectorize_clasifer
 import keras.backend.tensorflow_backend as tb
 
 app = Flask(__name__)
+cors = CORS(app)
+
 
 # Load the model
 model_LSTM = joblib.load('LSTM_model.pkl')
@@ -23,12 +26,22 @@ NB_model = joblib.load('NB_model.pkl')
 tfidf_vec = joblib.load('tfidf.pkl')
 
 
+# @app.after_request
+# def after_request(response):
+#     header = response.headers
+#     header['Access-Control-Allow-Origin'] = '*'
+#     header['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+#     header['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
+#     return response
+
+
 @app.route("/")
 def main():
     return "Welcome!"
 
 
-@app.route('/api', methods=['POST'])
+@app.route('/api/all', methods=['POST'])
+# @cross_origin()
 def predictApi():
 
     tb._SYMBOLIC_SCOPE.value = True
@@ -48,6 +61,7 @@ def predictApi():
 
 
 @app.route('/api/lstm', methods=['POST'])
+# @cross_origin()
 def pridictLSTM():
 
     tb._SYMBOLIC_SCOPE.value = True
@@ -77,6 +91,7 @@ def pridictLSTM():
 
 
 @app.route('/api/svm', methods=['POST'])
+# @cross_origin()
 def pridictModelSVM():
     tb._SYMBOLIC_SCOPE.value = True
 
@@ -107,6 +122,7 @@ def pridictModelSVM():
 
 
 @app.route('/api/nb', methods=['POST'])
+# @cross_origin()
 def pridictModelNP():
     tb._SYMBOLIC_SCOPE.value = True
 
