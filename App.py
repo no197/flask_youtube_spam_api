@@ -13,26 +13,28 @@ import joblib
 import pickle
 from PredictHelper import LSTM_predict, predict, pre_processing, vectorize_lstm, vectorize_clasifer
 import keras.backend.tensorflow_backend as tb
+import os
 
 app = Flask(__name__)
 cors = CORS(app)
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+models_dir = os.path.join(basedir, 'models')
+
+# Model dir
+lstm_dir = os.path.join(models_dir, 'LSTM_model.pkl')
+tokenizer_dir = os.path.join(models_dir, 'tokenizer_LSTM.pkl')
+svm_dir = os.path.join(models_dir, 'SVM_model.pkl')
+nb_dir = os.path.join(models_dir, 'NB_model.pkl')
+tfidf_dir = os.path.join(models_dir, 'tfidf.pkl')
+
 
 # Load the model
-model_LSTM = joblib.load('LSTM_model.pkl')
-tokenizer_LSTM = joblib.load('tokenizer_LSTM.pkl')
-SVM_model = joblib.load('SVM_model.pkl')
-NB_model = joblib.load('NB_model.pkl')
-tfidf_vec = joblib.load('tfidf.pkl')
-
-
-# @app.after_request
-# def after_request(response):
-#     header = response.headers
-#     header['Access-Control-Allow-Origin'] = '*'
-#     header['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-#     header['Access-Control-Allow-Methods'] = 'OPTIONS, HEAD, GET, POST, DELETE, PUT'
-#     return response
+model_LSTM = joblib.load(lstm_dir)
+tokenizer_LSTM = joblib.load(tokenizer_dir)
+SVM_model = joblib.load(svm_dir)
+NB_model = joblib.load(nb_dir)
+tfidf_vec = joblib.load(tfidf_dir)
 
 
 @app.route("/")
